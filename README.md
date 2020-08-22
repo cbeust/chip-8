@@ -72,7 +72,7 @@ For example, here is a text based renderer:
 The emulator window will resize gracefully:
 
 <p align="center">
-    <img width="50%" src="https://github.com/cbeust/chip8/blob/master/pics/space-invaders-small.png?raw=true"/>
+    <img width="20%" src="https://github.com/cbeust/chip8/blob/master/pics/space-invaders-small.png?raw=true"/>
 </p>
 
 You can also easily alter other aspects of the renderer:
