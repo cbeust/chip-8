@@ -1,0 +1,40 @@
+AnchorPane {
+    -fx-background-color: #43e6ef;
+}
+
+.left-side {
+    -fx-font-size: 20px;
+    -fx-font-weight: bold;
+    -fx-text-fill: #333333;
+}
+
+.rom-name {
+    -fx-font-size: 20px;
+    -fx-font-weight: bold;
+}
+
+.right-side {
+}
+
+.emulator {
+    -fx-padding: 20px;
+    -fx-font-family: Consolas, "Courier New";
+}
+
+.buttons {
+    -fx-fill-width: true;
+}
+
+ScrollPane, .disassembly {
+    -fx-background-color: #000000;
+}
+
+Button, GridPane, Label {
+    -fx-max-width: 10000;
+    -fx-max-height: 10000;
+}
+
+.disassembly > Label {
+    -fx-text-fill: green;
+    -fx-font-weight: bold;
+}

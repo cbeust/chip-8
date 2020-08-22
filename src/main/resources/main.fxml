@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<AnchorPane xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.beust.chip8.Controller" stylesheets="style.css">
+    <HBox AnchorPane.rightAnchor="5" AnchorPane.leftAnchor="5" AnchorPane.topAnchor="5" AnchorPane.bottomAnchor="5">
+        <children>
+            <!-- Left side -->
+            <VBox AnchorPane.bottomAnchor="0.0" AnchorPane.topAnchor="0.0" AnchorPane.leftAnchor="0">
+                <AnchorPane id="left">
+                    <VBox AnchorPane.rightAnchor="0.0"
+                            AnchorPane.bottomAnchor="0.0" AnchorPane.topAnchor="0.0" AnchorPane.leftAnchor="0">
+                        <VBox alignment="TOP_CENTER" styleClass="left-side" maxWidth="Infinity">
+                            <children>
+                                <Label text="CHIP-8" alignment="CENTER" />
+                                <Label text="by Cédric Beust" alignment="CENTER"/>
+                            </children>
+                        </VBox>
+                        <padding>
+                            <Insets left="10" top="10" right="10" bottom="10" />
+                        </padding>
+                        <VBox spacing="10" >
+                            <padding>
+                                <Insets top="10" bottom="10"/>
+                            </padding>
+                            <Button text="Open rom..." alignment="CENTER" id="loadRom">
+                            </Button>
+                            <Button text="Pause" id="pause">
+                            </Button>
+                            <HBox maxWidth="Infinity" spacing="10">
+                                <Label text="Clock speed"/>
+                                <TextField id="cpuClock" maxWidth="Infinity" HBox.hgrow="ALWAYS"></TextField>
+                                <Label text="Hz"/>
+                            </HBox>
+                        </VBox>
+                        <ScrollPane id="disassemblyScrollPane" vbarPolicy="AS_NEEDED" hbarPolicy="AS_NEEDED">
+                            <content>
+                                <GridPane id="disassembly" styleClass="disassembly" hgap="2" vgap="2"
+                                          prefWidth="250"
+                                          VBox.vgrow="ALWAYS" maxWidth="Infinity" maxHeight="Infinity">
+                                    <columnConstraints>
+                                        <ColumnConstraints percentWidth="20.0"/>
+                                        <ColumnConstraints percentWidth="20.0"/>
+                                        <ColumnConstraints percentWidth="60.0"/>
+                                    </columnConstraints>
+                                </GridPane>
+                            </content>
+                        </ScrollPane>
+                    </VBox>
+                </AnchorPane>
+            </VBox>
+
+            <!-- Right side -->
+            <AnchorPane HBox.hgrow="ALWAYS">
+                <VBox styleClass="right-side"
+                      AnchorPane.bottomAnchor="0" AnchorPane.topAnchor="0"
+                      AnchorPane.leftAnchor="0" AnchorPane.rightAnchor="0"
+                      >
+                    <children>
+                        <Label alignment="TOP_CENTER" id="currentRom" text="Current ROM" styleClass="rom-name"
+                            maxWidth="Infinity"/>
+                        <VBox id="emulator" styleClass="emulator"
+                              VBox.vgrow="ALWAYS" maxWidth="Infinity" maxHeight="Infinity" />
+                    </children>
+                </VBox>
+            </AnchorPane>
+        </children>
+    </HBox>
+</AnchorPane>
