@@ -3,6 +3,7 @@ package com.beust.chip8
 import com.beust.jcommander.JCommander
 import com.beust.jcommander.Parameter
 import javafx.application.Application
+import javafx.application.Platform
 import javafx.beans.property.SimpleBooleanProperty
 import javafx.beans.property.SimpleStringProperty
 import javafx.event.EventHandler
@@ -97,6 +98,10 @@ class MyFxApp : Application() {
         }
 
         primaryStage.title = "CHIP-8"
+        primaryStage.onCloseRequest = EventHandler {
+            Platform.exit()
+            exitProcess(0)
+        }
         val url = this::class.java.classLoader.getResource("main.fxml")
         val loader = FXMLLoader(url)
         val res = url.openStream()
@@ -190,7 +195,7 @@ class MyFxApp : Application() {
                         try {
                             val key = Integer.parseInt(event.code.char, 16)
                             keyListener.onKey(key)
-                        } catch(ex: NumberFormatException) {
+                        } catch (ex: NumberFormatException) {
                             println("Can't parse key " + event.code.char + ", ignoring")
                         }
                     }
