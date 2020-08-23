@@ -1,8 +1,8 @@
-# chip8
+# Chipsk-8
 ## A [Chip-8](http://www.cs.columbia.edu/~sedwards/classes/2016/4840-spring/designs/Chip8.pdf) emulator written in Kotlin
 
 <p align="center">
-    <img src="https://github.com/cbeust/chip8/blob/master/pics/space-invaders-2.gif?raw=true"/>
+    <img src="https://github.com/cbeust/chip-8/blob/master/pics/space-invaders-2.gif?raw=true"/>
 </p>
 
 # How to run
@@ -35,7 +35,7 @@ timerFuture = executor.scheduleAtFixedRate(timerTick, 0, 16L, TimeUnit.MILLISECO
 ```
 
 <p align="center">
-    <img width="50%" src="https://github.com/cbeust/chip8/blob/master/pics/tetris-1.png?raw=true"/>
+    <img width="50%" src="https://github.com/cbeust/chip-8/blob/master/pics/tetris-1.png?raw=true"/>
 </p>
 
 The next two bytes are then masked and turned into instructions. All the op codes can be found in the `[Ops.kt](https://github.com/cbeust/chip8/blob/master/src/main/kotlin/com/beust/chip8/Ops.kt)` file. Here is an example:
@@ -66,18 +66,18 @@ interface Display {
 For example, here is a text based renderer:
 
 <p align="center">
-    <img width="50%" src="https://github.com/cbeust/chip8/blob/master/pics/space-invaders-text.png?raw=true"/>
+    <img width="50%" src="https://github.com/cbeust/chip-8/blob/master/pics/space-invaders-text.png?raw=true"/>
 </p>
     
 The emulator window will resize gracefully:
 
 <p align="center">
-    <img width="20%" src="https://github.com/cbeust/chip8/blob/master/pics/space-invaders-small.png?raw=true"/>
+    <img width="20%" src="https://github.com/cbeust/chip-8/blob/master/pics/space-invaders-small.png?raw=true"/>
 </p>
 
 You can also easily alter other aspects of the renderer:
 
 <p align="center">
-    <img width="50%" src="https://github.com/cbeust/chip8/blob/master/pics/space-invaders-colors.png?raw=true"/>
+    <img width="50%" src="https://github.com/cbeust/chip-8/blob/master/pics/space-invaders-colors.png?raw=true"/>
 </p>
 
