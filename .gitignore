@@ -1,0 +1,11 @@
+local.properties
+build
+.idea
+*.iml
+.gradle
+.kobalt
+kobaltBuild
+kobalt/out
+lib/kotlin-*
+target/*
+
