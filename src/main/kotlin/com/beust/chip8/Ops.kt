@@ -3,8 +3,10 @@ package com.beust.chip8
 import kotlin.random.Random
 
 /**
- * An Op is made of two bytes which is sliced into four nibbles. These nibbles are then used
- * to determine the op and its data.
+ * An Op is made of two bytes which are sliced into four nibbles. These nibbles are then used
+ * to determine the op and its data. Bytes get sliced differently depending on the opcode. The base
+ * class offers some convenience functions to access these nibbles but makes them lazy since ops
+ * will need different ones and we don't want to do unnecessary work.
  */
 sealed class Op(val computer: Computer, val nib: Nibbles) {
     protected val nnn by lazy { nib.val3(nib.b1, nib.b2, nib.b3) }
