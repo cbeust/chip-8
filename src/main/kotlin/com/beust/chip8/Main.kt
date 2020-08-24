@@ -45,7 +45,7 @@ class MyFxApp : Application() {
             // Computer is paused
 
             // Update the pause button label
-            pauseButton?.text = if (newVal)  "Resume" else "Pause"
+            pauseButton?.text = if (newVal)  "_Resume" else "_Pause"
 
             // Display the disassembly
             updateDisassembly(disassembly!!, computer.disassemble())
@@ -187,10 +187,14 @@ class MyFxApp : Application() {
                     exitProcess(0)
                 }
                 KeyCode.P -> {
-                    computer.pause()
+                    if (computer.paused) {
+                        computer.start()
+                    } else {
+                        computer.pause()
+                    }
                 }
                 else -> {
-                    if (computer.paused) computer.start()
+                    if (computer.paused && event.code != KeyCode.ALT) computer.start()
                     else {
                         try {
                             val key = Integer.parseInt(event.code.char, 16)

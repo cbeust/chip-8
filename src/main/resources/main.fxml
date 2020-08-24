@@ -26,7 +26,7 @@
                             </padding>
                             <Button text="Open rom..." alignment="CENTER" id="loadRom">
                             </Button>
-                            <Button text="Pause" id="pause">
+                            <Button text="_Pause" id="pause">
                             </Button>
                             <HBox maxWidth="Infinity" spacing="10">
                                 <Label text="Clock speed"/>
