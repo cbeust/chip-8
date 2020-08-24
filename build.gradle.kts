@@ -16,9 +16,6 @@ repositories {
     maven { setUrl("https://plugins.gradle.org/m2") }
 }
 
-version = 0.3
-group = "com.beust.chip8"
-
 defaultTasks(ApplicationPlugin.TASK_RUN_NAME)
 
 object This {
