@@ -5,6 +5,10 @@
     <img src="https://github.com/cbeust/chip-8/blob/master/pics/space-invaders-2.gif?raw=true"/>
 </p>
 
+# What is Chip-8?
+
+[Chip-8](https://en.wikipedia.org/wiki/CHIP-8) is a processor developed in the 70s. Because of its simplicity, it's a great starter project for anyone interested in learning how to implement an emulator.
+
 # How to run
 
 ```
