@@ -7,7 +7,7 @@
 
 # What is Chip-8?
 
-[Chip-8](https://en.wikipedia.org/wiki/CHIP-8) is a processor developed in the 70s. Because of its simplicity, it's a great starter project for anyone interested in learning how to implement an emulator.
+[Chip-8](https://en.wikipedia.org/wiki/CHIP-8) is a processor developed in the 70s. Because of its simplicity, it's a great starter project for anyone interested in learning how to implement an emulator. The specification is pretty small (about ten pages) and there are several roms available that make it easy to test how well your emulator runs.
 
 # How to run
 
