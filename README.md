@@ -42,7 +42,7 @@ timerFuture = executor.scheduleAtFixedRate(timerTick, 0, 16L, TimeUnit.MILLISECO
     <img width="50%" src="https://github.com/cbeust/chip-8/blob/master/pics/tetris-1.png?raw=true"/>
 </p>
 
-The next two bytes are then masked and turned into instructions. All the op codes can be found in the `[Ops.kt](https://github.com/cbeust/chip8/blob/master/src/main/kotlin/com/beust/chip8/Ops.kt)` file. Here is an example:
+The next two bytes are then masked and turned into instructions. All the op codes can be found in the [Ops.kt](https://github.com/cbeust/chip8/blob/master/src/main/kotlin/com/beust/chip8/Ops.kt) file. Here is an example:
 
 ```kotlin
 /**
