@@ -1,39 +1,38 @@
-@file:Suppress("MayBeConstant")
-
-fun DependencyHandler.impl(vararg dep: Any) = dep.forEach { implementation(it) }
-fun DependencyHandler.testImpl(vararg dep: Any) = dep.forEach { testImplementation(it) }
+import org.jetbrains.compose.compose
+import org.jetbrains.compose.desktop.application.dsl.TargetFormat
+import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
 plugins {
-    java
-    id("org.jetbrains.kotlin.jvm") version "1.3.72"
-    application
+    kotlin("jvm") version "1.4.21"
+    id("org.jetbrains.compose") version "0.3.0-build139"
     id("org.openjfx.javafxplugin") version "0.0.8"
 }
+
+group = "me.joreilly"
+version = "1.0"
 
 repositories {
     jcenter()
     mavenCentral()
-    maven { setUrl("https://plugins.gradle.org/m2") }
-}
-
-defaultTasks(ApplicationPlugin.TASK_RUN_NAME)
-
-object This {
-    val artifactId = "chip8"
+    maven { url = uri("https://maven.pkg.jetbrains.space/public/p/compose/dev") }
 }
 
 dependencies {
-    impl(kotlin("stdlib"), "com.beust:jcommander:1.72")
-    testImpl(kotlin("test"), "org.testng:testng:7.0.0", "org.assertj:assertj-core:3.10.0")
+    implementation(compose.desktop.currentOs)
+    implementation("com.beust:jcommander:1.72")
 }
 
-application {
-    mainClassName = "com.beust.chip8.MainKt"
+tasks.withType<KotlinCompile>() {
+    //kotlinOptions.jvmTarget = "11"
 }
 
-tasks {
-    withType<Test> {
-        useTestNG()
+compose.desktop {
+    application {
+        mainClass = "MainKt"
+        nativeDistributions {
+            targetFormats(TargetFormat.Dmg, TargetFormat.Msi, TargetFormat.Deb)
+            packageName = "untitled2"
+        }
     }
 }
 
