@@ -21,7 +21,7 @@ You can pause the emulator at any time (key '`p`'), which will update the disass
 
 # Architecture
 
-The game creates a [`Computer`](https://github.com/cbeust/chip8/blob/master/src/main/kotlin/com/beust/chip8/Computer.kt) object which is made of a `Display`, `Keyboard`, `FrameBuffer` and `Cpu`.
+The game creates a [`Computer`](https://github.com/cbeust/chip-8/blob/master/src/main/kotlin/com/beust/chip8/Computer.kt) object which is made of a `Display`, `Keyboard`, `FrameBuffer` and `Cpu`.
 
 ## Cpu
 
