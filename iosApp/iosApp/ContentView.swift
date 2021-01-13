@@ -18,7 +18,7 @@ struct ContentView: View {
                     GameButton(emulatorViewModel: emulatorViewModel, number: 6)
                 }
             }
-        }
+        }.padding()
     }
 }
 
@@ -27,14 +27,14 @@ struct GameButton: View {
     let number: Int32
     
     var body: some View {
-        Button(action: { emulatorViewModel.keyPressed(key: number) }) {
+        Button(action: {  }) {
             Text("\(number)").font(.title)
         }
         .frame(minWidth: 80).background(Color.gray).foregroundColor(.white)
         .simultaneousGesture(
             DragGesture(minimumDistance: 0)
                 .onChanged({ _ in
-                    
+                    emulatorViewModel.keyPressed(key: number)
                 })
                 .onEnded({ _ in
                     emulatorViewModel.keyReleased()
