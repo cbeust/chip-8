@@ -46,7 +46,7 @@ fun MainLayout(romData: ByteArray) {
         }
     }
 
-    Column {
+    Column(modifier = Modifier.fillMaxHeight().padding(16.dp), verticalArrangement = Arrangement.SpaceBetween) {
         EmulatorView(emulator)
 
         Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.SpaceEvenly) {
@@ -73,7 +73,7 @@ fun GameButton(emulator: Emulator, number: Int) {
         }
         true
     }, onClick = {}) {
-        Text(number.toString())
+        Text(number.toString(), style = MaterialTheme.typography.h3)
     }
 }
 
