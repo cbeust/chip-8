@@ -2,6 +2,7 @@ package dev.johnoreilly.chip_8_kmm.androidApp
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.view.MotionEvent
 import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
@@ -12,7 +13,10 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.geometry.Size
+import androidx.compose.ui.gesture.longPressDragGestureFilter
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.input.key.onKeyEvent
+import androidx.compose.ui.input.pointer.pointerInteropFilter
 import androidx.compose.ui.layout.WithConstraints
 import androidx.compose.ui.platform.setContent
 import androidx.compose.ui.unit.dp
@@ -55,7 +59,20 @@ fun MainLayout(romData: ByteArray) {
 
 @Composable
 fun GameButton(emulator: Emulator, number: Int) {
-    Button(onClick = { emulator.keyPressed(number) }) {
+    println("JFOR GameButton")
+    Button(modifier = Modifier.pointerInteropFilter {
+        println("JFOR - pointerInteropFilter")
+        when (it.action) {
+            MotionEvent.ACTION_DOWN -> {
+                emulator.keyPressed(number)
+            }
+            MotionEvent.ACTION_UP -> {
+                emulator.keyReleased()
+            }
+            else ->  false
+        }
+        true
+    }, onClick = {}) {
         Text(number.toString())
     }
 }
