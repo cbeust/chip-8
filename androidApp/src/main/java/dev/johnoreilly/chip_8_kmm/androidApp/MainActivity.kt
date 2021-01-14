@@ -7,14 +7,20 @@ import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.Button
+import androidx.compose.material.Icon
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.ArrowBack
+import androidx.compose.material.icons.filled.ArrowForward
+import androidx.compose.material.icons.filled.ArrowUpward
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.geometry.Size
 import androidx.compose.ui.gesture.longPressDragGestureFilter
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.input.key.onKeyEvent
 import androidx.compose.ui.input.pointer.pointerInteropFilter
 import androidx.compose.ui.layout.WithConstraints
@@ -50,15 +56,15 @@ fun MainLayout(romData: ByteArray) {
         EmulatorView(emulator)
 
         Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.SpaceEvenly) {
-            GameButton(emulator, 4)
-            GameButton(emulator, 5)
-            GameButton(emulator, 6)
+            GameButton(emulator, 4, Icons.Filled.ArrowBack)
+            GameButton(emulator, 5, Icons.Filled.ArrowUpward)
+            GameButton(emulator, 6, Icons.Filled.ArrowForward)
         }
     }
 }
 
 @Composable
-fun GameButton(emulator: Emulator, number: Int) {
+fun GameButton(emulator: Emulator, number: Int, icon: ImageVector) {
     println("JFOR GameButton")
     Button(modifier = Modifier.pointerInteropFilter {
         println("JFOR - pointerInteropFilter")
@@ -73,7 +79,7 @@ fun GameButton(emulator: Emulator, number: Int) {
         }
         true
     }, onClick = {}) {
-        Text(number.toString(), style = MaterialTheme.typography.h3)
+        Icon(icon)
     }
 }
 
