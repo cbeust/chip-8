@@ -70,7 +70,8 @@ fun MainLayout(romData: ByteArray, romName: String) {
         }
         .focusReference(focusRequester)
         .focusModifier()
-        .clickable(indication = null) { focusRequester.requestFocus() })
+        .clickable(indication = null) { focusRequester.requestFocus() }
+        .padding(16.dp))
     {
 
         Row(modifier = Modifier.fillMaxWidth().padding(16.dp),
