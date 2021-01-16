@@ -18,10 +18,12 @@ dependencies {
     implementation(compose.desktop.currentOs)
 }
 
-tasks.withType<KotlinCompile>() {
+tasks.withType<KotlinCompile> {
     kotlinOptions.jvmTarget = "1.8"
 }
 
 application {
-    mainClassName = "mainKt"
+    mainClass.set("MainKt")
 }
+
+tasks.getByName<JavaExec>("run").workingDir=project.rootDir
