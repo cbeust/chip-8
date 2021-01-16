@@ -91,24 +91,23 @@ fun EmulatorView(emulator: Emulator) {
         }
     }
 
+    val displayWidth = Display.WIDTH
+    val displayHeight = Display.HEIGHT
+
     screenData.value?.let { screenData ->
         WithConstraints {
-            val blockWidth = constraints.maxWidth / Display.WIDTH
-            val blockHeight = blockWidth
+            val blockSize = constraints.maxWidth / displayWidth
 
-            Canvas(modifier = Modifier.fillMaxWidth().preferredHeight(200.dp).background(Color.White)) {
-
-                repeat(Display.WIDTH) { x ->
-                    repeat(Display.HEIGHT) { y ->
-                        val index = x + Display.WIDTH * y
+            Canvas(modifier = Modifier.fillMaxWidth()) {
+                repeat(displayWidth) { x ->
+                    repeat(displayHeight) { y ->
+                        val index = x + displayWidth * y
                         if (screenData[index] == 1) {
-                            val xx = blockWidth * x.toFloat()
-                            val yy = blockHeight * y.toFloat()
+                            val xx = blockSize * x.toFloat()
+                            val yy = blockSize * y.toFloat()
 
-                            drawRect(
-                                Color.Black,
-                                topLeft = Offset(xx, yy),
-                                size = Size(blockHeight.toFloat(), blockHeight.toFloat())
+                            drawRect(Color.Black, topLeft = Offset(xx, yy),
+                                size = Size(blockSize.toFloat(), blockSize.toFloat())
                             )
                         }
                     }

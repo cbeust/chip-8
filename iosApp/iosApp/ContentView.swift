@@ -10,7 +10,7 @@ struct ContentView: View {
         GeometryReader { geometry in
             VStack {
                 EmulatorView(screenData: emulatorViewModel.screenData)
-                    .frame(width: geometry.size.width)
+                    //.frame(width: geometry.size.width)
 
                 HStack {
                     GameButton(emulatorViewModel: emulatorViewModel, number: 4, icon: "arrow.left")
@@ -48,21 +48,20 @@ struct EmulatorView: Shape {
     let screenData: KotlinIntArray
 
     func path(in rect: CGRect) -> Path {
-        let width = 64
-        let height = 32
+        let displayWidth = 64
+        let displayHeight = 32
 
-        let columnSize = rect.width / CGFloat(width)
-        let rowSize = columnSize
+        let blockSize = rect.width / CGFloat(displayWidth)
 
         var path = Path()
-        for x in 0 ..< width {
-            for y in 0 ..< height {
-                let index = x + 64 * y
+        for x in 0 ..< displayWidth {
+            for y in 0 ..< displayHeight {
+                let index = x + displayWidth * y
                 if (screenData.get(index: Int32(index)) == 1) {
-                    let xx = columnSize * CGFloat(x)
-                    let yy = rowSize * CGFloat(y)
+                    let xx = blockSize * CGFloat(x)
+                    let yy = blockSize * CGFloat(y)
 
-                    let rect = CGRect(x: xx, y: yy, width: columnSize, height: rowSize)
+                    let rect = CGRect(x: xx, y: yy, width: blockSize, height: blockSize)
                     path.addRect(rect)
                 }
             }
