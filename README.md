@@ -8,5 +8,7 @@ Current clients
 * iOS (SwiftUI)
 * Desktop (Compose for Desktop)
 
+(The game emulator has virtual "keyboard" interface. In the desktop client game is typically driven by 4, 5, and 6
+keys...on mobile these are simulated with buttons)
 
 ![Screenshots](/art/screenshots.png?raw=true)
