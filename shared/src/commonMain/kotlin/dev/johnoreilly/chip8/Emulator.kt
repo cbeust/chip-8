@@ -12,6 +12,10 @@ class Emulator {
         computer.loadRom(romData)
     }
 
+    fun stop() {
+        computer.stop()
+    }
+
     fun observeScreenUpdates(success: (IntArray) -> Unit) {
         display.setScreenCallback {
             success(it)
@@ -38,6 +42,7 @@ class ComposeDisplay() : Display {
     }
 
     override fun clear(frameBuffer: IntArray) {
+        frameBuffer.fill(0)
     }
 
     fun setScreenCallback(screenCallback: (IntArray) -> Unit) {

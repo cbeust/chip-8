@@ -1,13 +1,11 @@
 import androidx.compose.desktop.Window
-import androidx.compose.foundation.Canvas
-import androidx.compose.foundation.background
-import androidx.compose.foundation.clickable
+import androidx.compose.foundation.*
 import androidx.compose.foundation.layout.*
-import androidx.compose.material.Button
+import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material.MaterialTheme
-import androidx.compose.material.Surface
 import androidx.compose.material.Text
 import androidx.compose.runtime.*
+import androidx.compose.runtime.savedinstancestate.savedInstanceState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.focus.FocusReference
@@ -16,48 +14,128 @@ import androidx.compose.ui.focus.focusReference
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.geometry.Size
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.RectangleShape
 import androidx.compose.ui.input.key.KeyEventType
 import androidx.compose.ui.input.key.onKeyEvent
 import androidx.compose.ui.layout.WithConstraints
-import androidx.compose.ui.platform.DensityAmbient
+import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.unit.IntSize
 import androidx.compose.ui.unit.dp
-import com.beust.chip8.Computer
 import com.beust.chip8.Display
 import dev.johnoreilly.chip8.Emulator
-import kotlinx.coroutines.MainScope
-import kotlinx.coroutines.channels.awaitClose
-import kotlinx.coroutines.flow.*
+import theme.DarkColorPalette
+import theme.LightColorPalette
+import theme.SlackColors
+import theme.divider
 import java.io.File
 import java.nio.file.Paths
-import kotlin.io.path.readBytes
 
 
-fun main() = Window {
-    val romFile = Paths.get("roms", "Space Invaders [David Winter].ch8")
-    val currentRomPath = romFile.toFile().absolutePath
-    val romData = File(currentRomPath).readBytes()
-
-    // Update the rom name
-    val start = currentRomPath.lastIndexOf(File.separatorChar)
-    val end = currentRomPath.lastIndexOf(".ch8")
-    val romName = if (end == -1) currentRomPath.substring(start + 1)
-    else currentRomPath.substring(start + 1, end)
-
-
-    MaterialTheme {
-        MainLayout(romData, romName)
+fun main() = Window(
+    title = "Chip-8 Emulator",
+    size = IntSize(1280, 720)
+) {
+    val darkTheme = savedInstanceState { true }
+    MaterialTheme(colors = if (darkTheme.value) DarkColorPalette else LightColorPalette) {
+        EmulatorApp()
     }
 }
 
-@Composable
-fun MainLayout(romData: ByteArray, romName: String) {
-    val focusRequester = remember { FocusReference() }
 
-    val emulator = remember {
-        Emulator().also {
-            it.loadRom(romData)
+@Composable
+fun EmulatorApp() {
+    val emulator = remember { Emulator() }
+
+    val gameNames = remember {
+        File("roms").listFiles().map {
+            val currentRomPath = it.absolutePath
+            val start = currentRomPath.lastIndexOf(File.separatorChar)
+            val end = currentRomPath.lastIndexOf(".ch8")
+            if (end != -1) {
+                currentRomPath.substring(start + 1, end)
+            } else null
+        }.filterNotNull()
+    }
+    val selectedGame = remember { mutableStateOf(gameNames[0]) }
+
+
+    LaunchedEffect(selectedGame.value) {
+        val romData = getRomData(selectedGame.value)
+        emulator.loadRom(romData)
+    }
+
+    Row(
+        modifier = Modifier.background(color = MaterialTheme.colors.surface).fillMaxSize()
+    ) {
+
+        GameListSidebar(gameNames, selectedGame.value, onGameSelected = {
+            selectedGame.value = it
+        })
+
+        GameWindow(emulator, selectedGame.value)
+    }
+}
+
+private fun getRomData(gameName: String): ByteArray {
+    val romFile = Paths.get("roms", "$gameName.ch8")
+    println("romFile = $romFile")
+    val currentRomPath = romFile.toFile().absolutePath
+    val romData = File(currentRomPath).readBytes()
+    return romData
+}
+
+@Composable
+fun GameListSidebar(gameNames: List<String>, selectedGame: String, onGameSelected: (game: String) -> Unit) {
+
+
+    Column(
+        modifier = Modifier
+            .preferredWidth(350.dp)
+            .background(
+                color = MaterialTheme.colors.surface,
+                shape = RectangleShape
+            )
+            .border(
+                border = BorderStroke(1.dp, color = divider),
+                shape = RectangleShape
+            )
+            .fillMaxHeight()
+            .fillMaxWidth()
+    ) {
+
+
+        LazyColumn {
+            items(items = gameNames, itemContent =  { game ->
+                val backgroundColor = if (selectedGame == game) SlackColors.optionSelected else Color.Transparent
+                val color = if (selectedGame == game) Color.White else Color.LightGray
+                Row(
+                    modifier = Modifier.fillMaxWidth()
+                    .background(
+                        color = backgroundColor
+                        )
+                    .clickable(indication = null) {
+                        onGameSelected.invoke(game)
+                    }.padding(horizontal = 15.dp, vertical = 6.dp),
+                    verticalAlignment = Alignment.CenterVertically
+                ) {
+
+                    Text(
+                        text = game,
+                        color = color,
+                        style = MaterialTheme.typography.body2.copy(
+                            fontWeight = FontWeight.Normal
+                        )
+                    )
+                }
+            })
         }
     }
+
+}
+
+@Composable
+fun GameWindow(emulator: Emulator, gameName: String) {
+    val focusRequester = remember { FocusReference() }
 
     Column(modifier = Modifier
         .onKeyEvent {
@@ -74,19 +152,13 @@ fun MainLayout(romData: ByteArray, romName: String) {
         .padding(16.dp))
     {
 
-        Row(modifier = Modifier.fillMaxWidth().padding(16.dp),
-            verticalAlignment = Alignment.CenterVertically,
-            horizontalArrangement = Arrangement.Center) {
-            Text(romName, style = MaterialTheme.typography.h3)
-        }
-
-        EmulatorView(emulator)
+        EmulatorView(emulator, gameName)
     }
 }
 
 @Composable
-fun EmulatorView(emulator: Emulator) {
-    val screenData = produceState<IntArray?>(null, emulator) {
+fun EmulatorView(emulator: Emulator, gameName: String) {
+    val screenData = produceState<IntArray?>(null, gameName) {
         emulator.observeScreenUpdates {
             value = it
         }
