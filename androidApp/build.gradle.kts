@@ -20,7 +20,6 @@ android {
     }
 
     composeOptions {
-        kotlinCompilerVersion = "1.4.21"
         kotlinCompilerExtensionVersion = Versions.compose
     }
 
@@ -39,6 +38,7 @@ android {
 
     kotlinOptions {
         jvmTarget = "1.8"
+        useIR = true
     }
 }
 

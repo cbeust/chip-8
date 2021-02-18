@@ -23,7 +23,6 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.input.key.onKeyEvent
 import androidx.compose.ui.input.pointer.pointerInteropFilter
-import androidx.compose.ui.layout.WithConstraints
 import androidx.compose.ui.platform.setContent
 import androidx.compose.ui.unit.dp
 import com.beust.chip8.Display
@@ -52,7 +51,9 @@ fun MainLayout(romData: ByteArray) {
         }
     }
 
-    Column(modifier = Modifier.fillMaxHeight().padding(16.dp), verticalArrangement = Arrangement.SpaceBetween) {
+    Column(modifier = Modifier
+        .fillMaxHeight()
+        .padding(16.dp), verticalArrangement = Arrangement.SpaceBetween) {
         EmulatorView(emulator)
 
         Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.SpaceEvenly) {
@@ -65,9 +66,7 @@ fun MainLayout(romData: ByteArray) {
 
 @Composable
 fun GameButton(emulator: Emulator, number: Int, icon: ImageVector) {
-    println("JFOR GameButton")
     Button(modifier = Modifier.pointerInteropFilter {
-        println("JFOR - pointerInteropFilter")
         when (it.action) {
             MotionEvent.ACTION_DOWN -> {
                 emulator.keyPressed(number)
@@ -79,7 +78,7 @@ fun GameButton(emulator: Emulator, number: Int, icon: ImageVector) {
         }
         true
     }, onClick = {}) {
-        Icon(icon)
+        Icon(imageVector = icon, contentDescription = "$number")
     }
 }
 
@@ -95,7 +94,7 @@ fun EmulatorView(emulator: Emulator) {
     val displayHeight = Display.HEIGHT
 
     screenData.value?.let { screenData ->
-        WithConstraints {
+        BoxWithConstraints {
             val blockSize = constraints.maxWidth / displayWidth
 
             Canvas(modifier = Modifier.fillMaxWidth()) {
