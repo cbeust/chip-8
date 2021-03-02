@@ -1,6 +1,6 @@
 
 object Versions {
-    const val kotlin = "1.4.30"
+    const val kotlin = "1.4.31"
     const val kotlinxCoroutines = "1.4.2-native-mt"
 
     const val compose = "1.0.0-beta01"

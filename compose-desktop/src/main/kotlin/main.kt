@@ -2,22 +2,21 @@ import androidx.compose.desktop.Window
 import androidx.compose.foundation.*
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
 import androidx.compose.runtime.*
-import androidx.compose.runtime.savedinstancestate.savedInstanceState
+import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.focus.FocusReference
-import androidx.compose.ui.focus.focusModifier
-import androidx.compose.ui.focus.focusReference
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.geometry.Size
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.RectangleShape
 import androidx.compose.ui.input.key.KeyEventType
+import androidx.compose.ui.input.key.key
 import androidx.compose.ui.input.key.onKeyEvent
-import androidx.compose.ui.layout.WithConstraints
+import androidx.compose.ui.input.key.type
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.IntSize
 import androidx.compose.ui.unit.dp
@@ -35,8 +34,7 @@ fun main() = Window(
     title = "Chip-8 Emulator",
     size = IntSize(1280, 720)
 ) {
-    val darkTheme = savedInstanceState { true }
-    MaterialTheme(colors = if (darkTheme.value) DarkColorPalette else LightColorPalette) {
+    MaterialTheme {
         EmulatorApp()
     }
 }
@@ -90,7 +88,7 @@ fun GameListSidebar(gameNames: List<String>, selectedGame: String, onGameSelecte
 
     Column(
         modifier = Modifier
-            .preferredWidth(350.dp)
+            .width(350.dp)
             .background(
                 color = MaterialTheme.colors.surface,
                 shape = RectangleShape
@@ -105,7 +103,7 @@ fun GameListSidebar(gameNames: List<String>, selectedGame: String, onGameSelecte
 
 
         LazyColumn {
-            items(items = gameNames, itemContent =  { game ->
+            items(gameNames) { game ->
                 val backgroundColor = if (selectedGame == game) SlackColors.optionSelected else Color.Transparent
                 val color = if (selectedGame == game) Color.White else Color.LightGray
                 Row(
@@ -113,7 +111,7 @@ fun GameListSidebar(gameNames: List<String>, selectedGame: String, onGameSelecte
                     .background(
                         color = backgroundColor
                         )
-                    .clickable(indication = null) {
+                    .clickable() {
                         onGameSelected.invoke(game)
                     }.padding(horizontal = 15.dp, vertical = 6.dp),
                     verticalAlignment = Alignment.CenterVertically
@@ -127,7 +125,7 @@ fun GameListSidebar(gameNames: List<String>, selectedGame: String, onGameSelecte
                         )
                     )
                 }
-            })
+            }
         }
     }
 
@@ -135,20 +133,20 @@ fun GameListSidebar(gameNames: List<String>, selectedGame: String, onGameSelecte
 
 @Composable
 fun GameWindow(emulator: Emulator, gameName: String) {
-    val focusRequester = remember { FocusReference() }
+    //val focusRequester = remember { FocusReference() }
 
     Column(modifier = Modifier
         .onKeyEvent {
             if (it.type == KeyEventType.KeyDown) {
-                emulator.keyPressed(it.key.keyCode - 48)
+                emulator.keyPressed(it.key.keyCode.toInt() - 48)
             } else if (it.type == KeyEventType.KeyUp) {
                 emulator.keyReleased()
             }
             true
         }
-        .focusReference(focusRequester)
-        .focusModifier()
-        .clickable(indication = null) { focusRequester.requestFocus() }
+//        .focusReference(focusRequester)
+//        .focusModifier()
+//        .clickable(indication = null) { focusRequester.requestFocus() }
         .padding(16.dp))
     {
 
@@ -165,7 +163,7 @@ fun EmulatorView(emulator: Emulator, gameName: String) {
     }
 
     screenData.value?.let { screenData ->
-        WithConstraints {
+        BoxWithConstraints {
             val blockWidth = constraints.maxWidth / Display.WIDTH
             val blockHeight = blockWidth
 
