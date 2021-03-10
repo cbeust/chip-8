@@ -1,10 +1,10 @@
 
 object Versions {
     const val kotlin = "1.4.31"
-    const val kotlinxCoroutines = "1.4.2-native-mt"
+    const val kotlinxCoroutines = "1.4.3-native-mt"
 
-    const val compose = "1.0.0-beta01"
-    const val nav_compose = "1.0.0-alpha08"
+    const val compose = "1.0.0-beta02"
+    const val nav_compose = "1.0.0-alpha09"
 
     val stately = "1.1.0"
 
