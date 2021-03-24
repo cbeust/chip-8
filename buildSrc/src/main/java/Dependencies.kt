@@ -3,7 +3,7 @@ object Versions {
     const val kotlin = "1.4.31"
     const val kotlinxCoroutines = "1.4.3-native-mt"
 
-    const val compose = "1.0.0-beta02"
+    const val compose = "1.0.0-beta03"
     const val nav_compose = "1.0.0-alpha09"
 
     val stately = "1.1.0"
