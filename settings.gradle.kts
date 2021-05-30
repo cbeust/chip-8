@@ -11,7 +11,5 @@ pluginManagement {
 
 rootProject.name = "chip-8"
 
-enableFeaturePreview("GRADLE_METADATA")
-
 include(":androidApp", ":shared", ":compose-desktop")
 

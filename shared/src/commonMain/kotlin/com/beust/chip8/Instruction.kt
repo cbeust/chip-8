@@ -1,7 +1,5 @@
 package com.beust.chip8
 
-import co.touchlab.stately.ensureNeverFrozen
-
 fun log(s: String) {
     //println(s)
 }
@@ -28,8 +26,6 @@ class Instruction(private val computer: Computer, b0: Int, b1: Int, b2: Int, b3:
     private val op: Op
 
     init {
-        ensureNeverFrozen()
-
         val n = Nibbles(b0, b1, b2, b3)
         val undef = Undef(computer, n)
         op = when(b0) {

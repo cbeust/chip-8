@@ -1,7 +1,5 @@
 package com.beust.chip8
 
-import co.touchlab.stately.ensureNeverFrozen
-import co.touchlab.stately.freeze
 import kotlinx.coroutines.*
 
 /**
@@ -19,10 +17,6 @@ class Computer(val display: Display,
         var cpu: Cpu = Cpu(),
         val sound: Boolean = true)
 {
-    init {
-        ensureNeverFrozen()
-    }
-
     var paused = true
     var cpuClockHz: Long = 1000
         set(v) {

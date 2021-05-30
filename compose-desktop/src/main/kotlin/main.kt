@@ -9,14 +9,17 @@ import androidx.compose.runtime.*
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.focus.FocusRequester
+import androidx.compose.ui.focus.focusModifier
+import androidx.compose.ui.focus.focusRequester
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.geometry.Size
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.RectangleShape
-import androidx.compose.ui.input.key.KeyEventType
-import androidx.compose.ui.input.key.key
+import androidx.compose.ui.input.key.*
 import androidx.compose.ui.input.key.onKeyEvent
-import androidx.compose.ui.input.key.type
+import androidx.compose.ui.semantics.focused
+import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.IntSize
 import androidx.compose.ui.unit.dp
@@ -133,23 +136,27 @@ fun GameListSidebar(gameNames: List<String>, selectedGame: String, onGameSelecte
 
 @Composable
 fun GameWindow(emulator: Emulator, gameName: String) {
-    //val focusRequester = remember { FocusReference() }
+    val focusRequester = remember(::FocusRequester)
+
+    LaunchedEffect(Unit) {
+        focusRequester.requestFocus()
+    }
 
     Column(modifier = Modifier
         .onKeyEvent {
             if (it.type == KeyEventType.KeyDown) {
-                emulator.keyPressed(it.key.keyCode.toInt() - 48)
+                println(it.key.nativeKeyCode)
+                emulator.keyPressed(it.key.nativeKeyCode - 48)
             } else if (it.type == KeyEventType.KeyUp) {
                 emulator.keyReleased()
             }
             true
         }
-//        .focusReference(focusRequester)
-//        .focusModifier()
-//        .clickable(indication = null) { focusRequester.requestFocus() }
+        .focusRequester(focusRequester)
+        .focusModifier()
+        .clickable() { focusRequester.requestFocus() }
         .padding(16.dp))
     {
-
         EmulatorView(emulator, gameName)
     }
 }

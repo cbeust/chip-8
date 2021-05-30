@@ -1,7 +1,5 @@
 package com.beust.chip8
 
-import co.touchlab.stately.ensureNeverFrozen
-
 
 @Suppress("PropertyName")
 class Cpu {
@@ -48,8 +46,6 @@ class Cpu {
     )
 
     init {
-        ensureNeverFrozen()
-
         // Move the sprites at adress 0x000
         FONT_SPRITES.forEachIndexed { index, v ->
             memory[index] = v.toByte()

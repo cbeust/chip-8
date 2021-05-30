@@ -1,8 +1,8 @@
 package dev.johnoreilly.chip_8_kmm.androidApp
 
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.MotionEvent
+import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.layout.*
@@ -25,7 +25,7 @@ import com.beust.chip8.Display
 import dev.johnoreilly.chip8.Emulator
 
 
-class MainActivity : AppCompatActivity() {
+class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 

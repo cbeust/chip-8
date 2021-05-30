@@ -5,6 +5,18 @@ plugins {
     id("com.android.library")
 }
 
+// workaround for https://youtrack.jetbrains.com/issue/KT-43944
+android {
+    configurations {
+        create("androidTestApi")
+        create("androidTestDebugApi")
+        create("androidTestReleaseApi")
+        create("testApi")
+        create("testDebugApi")
+        create("testReleaseApi")
+    }
+}
+
 kotlin {
     android()
 
@@ -17,6 +29,10 @@ kotlin {
     }
     jvm()
 
+    js(IR) {
+        browser()
+    }
+
     sourceSets {
         val commonMain by getting {
             dependencies {
@@ -24,7 +40,7 @@ kotlin {
                     isForce = true
                 }
 
-                implementation(Deps.stately)
+                //implementation(Deps.stately)
             }
         }
         val commonTest by getting
@@ -33,6 +49,7 @@ kotlin {
         val iosMain by getting
         val iosTest by getting
         val jvmMain by getting
+        val jsMain by getting
     }
 }
 
