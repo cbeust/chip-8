@@ -6,38 +6,33 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
 import androidx.compose.runtime.*
-import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Alignment
+import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.focus.FocusRequester
-import androidx.compose.ui.focus.focusModifier
 import androidx.compose.ui.focus.focusRequester
+import androidx.compose.ui.focus.focusTarget
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.geometry.Size
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.RectangleShape
 import androidx.compose.ui.input.key.*
 import androidx.compose.ui.input.key.onKeyEvent
-import androidx.compose.ui.semantics.focused
-import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.IntSize
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.window.application
 import com.beust.chip8.Display
 import dev.johnoreilly.chip8.Emulator
-import theme.DarkColorPalette
-import theme.LightColorPalette
 import theme.SlackColors
 import theme.divider
 import java.io.File
 import java.nio.file.Paths
 
 
-fun main() = Window(
-    title = "Chip-8 Emulator",
-    size = IntSize(1280, 720)
-) {
-    MaterialTheme {
+@ExperimentalComposeUiApi
+fun main() = application {
+    Window(title = "Chip-8 Emulator", size = IntSize(1280, 720))  {
         EmulatorApp()
     }
 }
@@ -47,8 +42,12 @@ fun main() = Window(
 fun EmulatorApp() {
     val emulator = remember { Emulator() }
 
-    val gameNames = remember {
-        File("roms").listFiles().map {
+    var gameNames by remember { mutableStateOf(emptyList<String>()) }
+    var selectedGame by remember { mutableStateOf("") }
+
+
+    LaunchedEffect(true) {
+        gameNames =  File("roms").listFiles().map {
             val currentRomPath = it.absolutePath
             val start = currentRomPath.lastIndexOf(File.separatorChar)
             val end = currentRomPath.lastIndexOf(".ch8")
@@ -56,12 +55,11 @@ fun EmulatorApp() {
                 currentRomPath.substring(start + 1, end)
             } else null
         }.filterNotNull()
+        selectedGame = gameNames[0]
     }
-    val selectedGame = remember { mutableStateOf(gameNames[0]) }
 
-
-    LaunchedEffect(selectedGame.value) {
-        val romData = getRomData(selectedGame.value)
+    LaunchedEffect(selectedGame) {
+        val romData = getRomData(selectedGame)
         emulator.loadRom(romData)
     }
 
@@ -69,11 +67,11 @@ fun EmulatorApp() {
         modifier = Modifier.background(color = MaterialTheme.colors.surface).fillMaxSize()
     ) {
 
-        GameListSidebar(gameNames, selectedGame.value, onGameSelected = {
-            selectedGame.value = it
+        GameListSidebar(gameNames, selectedGame, onGameSelected = {
+            selectedGame = it
         })
 
-        GameWindow(emulator, selectedGame.value)
+        GameWindow(emulator, selectedGame)
     }
 }
 
@@ -89,7 +87,7 @@ private fun getRomData(gameName: String): ByteArray {
 fun GameListSidebar(gameNames: List<String>, selectedGame: String, onGameSelected: (game: String) -> Unit) {
 
 
-    Column(
+    LazyColumn(
         modifier = Modifier
             .width(350.dp)
             .background(
@@ -104,30 +102,28 @@ fun GameListSidebar(gameNames: List<String>, selectedGame: String, onGameSelecte
             .fillMaxWidth()
     ) {
 
-
-        LazyColumn {
-            items(gameNames) { game ->
-                val backgroundColor = if (selectedGame == game) SlackColors.optionSelected else Color.Transparent
-                val color = if (selectedGame == game) Color.White else Color.LightGray
-                Row(
-                    modifier = Modifier.fillMaxWidth()
-                    .background(
-                        color = backgroundColor
-                        )
-                    .clickable() {
-                        onGameSelected.invoke(game)
-                    }.padding(horizontal = 15.dp, vertical = 6.dp),
-                    verticalAlignment = Alignment.CenterVertically
-                ) {
-
-                    Text(
-                        text = game,
-                        color = color,
-                        style = MaterialTheme.typography.body2.copy(
-                            fontWeight = FontWeight.Normal
-                        )
+        items(gameNames) { game ->
+            println(game)
+            val backgroundColor = if (selectedGame == game) SlackColors.optionSelected else Color.Transparent
+            val color = if (selectedGame == game) Color.White else Color.LightGray
+            Row(
+                modifier = Modifier.fillMaxWidth()
+                .background(
+                    color = backgroundColor
                     )
-                }
+                .clickable() {
+                    onGameSelected.invoke(game)
+                }.padding(horizontal = 15.dp, vertical = 6.dp),
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+
+                Text(
+                    text = game,
+                    color = color,
+                    style = MaterialTheme.typography.body2.copy(
+                        fontWeight = FontWeight.Normal
+                    )
+                )
             }
         }
     }
@@ -145,7 +141,6 @@ fun GameWindow(emulator: Emulator, gameName: String) {
     Column(modifier = Modifier
         .onKeyEvent {
             if (it.type == KeyEventType.KeyDown) {
-                println(it.key.nativeKeyCode)
                 emulator.keyPressed(it.key.nativeKeyCode - 48)
             } else if (it.type == KeyEventType.KeyUp) {
                 emulator.keyReleased()
@@ -153,7 +148,7 @@ fun GameWindow(emulator: Emulator, gameName: String) {
             true
         }
         .focusRequester(focusRequester)
-        .focusModifier()
+        .focusTarget()
         .clickable() { focusRequester.requestFocus() }
         .padding(16.dp))
     {

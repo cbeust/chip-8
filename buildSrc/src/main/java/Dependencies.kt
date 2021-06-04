@@ -1,12 +1,10 @@
 
 object Versions {
-    const val kotlin = "1.4.32"
-    const val kotlinxCoroutines = "1.4.3-native-mt"
+    const val kotlin = "1.5.10"
+    const val kotlinxCoroutines = "1.5.0-native-mt"
 
-    const val compose = "1.0.0-beta06"
-    const val nav_compose = "1.0.0-alpha10"
-
-    val stately = "1.1.0"
+    const val compose = "1.0.0-beta08"
+    const val nav_compose = "2.4.0-alpha02"
 
     const val junit = "4.13"
 }
@@ -18,9 +16,6 @@ object AndroidSdk {
     const val target = compile
 }
 
-object Deps {
-    val stately = "co.touchlab:stately-common:${Versions.stately}"
-}
 
 object Compose {
     const val ui = "androidx.compose.ui:ui:${Versions.compose}"
