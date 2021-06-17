@@ -14,6 +14,7 @@ import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material.icons.filled.ArrowForward
 import androidx.compose.material.icons.filled.ArrowUpward
 import androidx.compose.runtime.*
+import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.geometry.Size
@@ -60,6 +61,7 @@ fun MainLayout(romData: ByteArray) {
     }
 }
 
+@OptIn(ExperimentalComposeUiApi::class)
 @Composable
 fun GameButton(emulator: Emulator, number: Int, icon: ImageVector) {
     Button(modifier = Modifier.pointerInteropFilter {
@@ -102,8 +104,7 @@ fun EmulatorView(emulator: Emulator) {
                             val yy = blockSize * y.toFloat()
 
                             drawRect(Color.Black, topLeft = Offset(xx, yy),
-                                size = Size(blockSize.toFloat(), blockSize.toFloat())
-                            )
+                                size = Size(blockSize.toFloat(), blockSize.toFloat()))
                         }
                     }
                 }
