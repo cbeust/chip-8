@@ -1,9 +1,9 @@
 
 object Versions {
-    const val kotlin = "1.5.21"
-    const val kotlinxCoroutines = "1.5.1-native-mt"
+    const val kotlin = "1.5.30"
+    const val kotlinxCoroutines = "1.5.2-native-mt"
 
-    const val compose = "1.0.2"
+    const val compose = "1.1.0-alpha04"
     const val nav_compose = "2.4.0-alpha08"
 
     const val junit = "4.13"
