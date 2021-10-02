@@ -3,8 +3,8 @@ object Versions {
     const val kotlin = "1.5.30"
     const val kotlinxCoroutines = "1.5.2-native-mt"
 
-    const val compose = "1.1.0-alpha04"
-    const val nav_compose = "2.4.0-alpha08"
+    const val compose = "1.0.3"
+    const val nav_compose = "2.4.0-alpha10"
 
     const val junit = "4.13"
 }
