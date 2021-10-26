@@ -93,9 +93,10 @@ fun EmulatorView(emulator: Emulator) {
 
     screenData.value?.let { screenData ->
         BoxWithConstraints {
-            val blockSize = constraints.maxWidth / displayWidth
 
             Canvas(modifier = Modifier.fillMaxWidth()) {
+                val blockSize = size.width / displayWidth
+
                 repeat(displayWidth) { x ->
                     repeat(displayHeight) { y ->
                         val index = x + displayWidth * y
@@ -104,7 +105,7 @@ fun EmulatorView(emulator: Emulator) {
                             val yy = blockSize * y.toFloat()
 
                             drawRect(Color.Black, topLeft = Offset(xx, yy),
-                                size = Size(blockSize.toFloat(), blockSize.toFloat()))
+                                size = Size(blockSize, blockSize))
                         }
                     }
                 }

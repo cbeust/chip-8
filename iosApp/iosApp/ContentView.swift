@@ -48,30 +48,31 @@ struct GameButton: View {
     }
 }
 
-struct EmulatorView: Shape {
-    let screenData: KotlinIntArray
 
-    func path(in rect: CGRect) -> Path {
+struct EmulatorView: View {
+    let screenData: KotlinIntArray
+    
+    var body: some View {
         let displayWidth = 64
         let displayHeight = 32
 
-        let blockSize = rect.width / CGFloat(displayWidth)
 
-        var path = Path()
-        for x in 0 ..< displayWidth {
-            for y in 0 ..< displayHeight {
-                let index = x + displayWidth * y
-                if (screenData.get(index: Int32(index)) == 1) {
-                    let xx = blockSize * CGFloat(x)
-                    let yy = blockSize * CGFloat(y)
+        Canvas { context, size in
+            let blockSize = size.width / CGFloat(displayWidth)
 
-                    let rect = CGRect(x: xx, y: yy, width: blockSize, height: blockSize)
-                    path.addRect(rect)
+            for x in 0 ..< displayWidth {
+                for y in 0 ..< displayHeight {
+                    let index = x + displayWidth * y
+                    if (screenData.get(index: Int32(index)) == 1) {
+                        let xx = blockSize * CGFloat(x)
+                        let yy = blockSize * CGFloat(y)
+
+                        let rect = CGRect(x: xx, y: yy, width: blockSize, height: blockSize)
+                        context.fill(Path(rect), with: .color(.black))
+                    }
                 }
             }
         }
-
-        return path
     }
 }
 
