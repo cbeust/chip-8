@@ -1,10 +1,11 @@
 
 object Versions {
-    const val kotlin = "1.5.31"
-    const val kotlinxCoroutines = "1.5.2-native-mt"
+    const val kotlin = "1.6.20"
+    const val kotlinxCoroutines = "1.6.1"
 
-    const val compose = "1.0.4"
-    const val nav_compose = "2.4.0-alpha10"
+    const val compose = "1.2.0-alpha08"
+    const val navCompose = "2.4.2"
+    const val composeDesktopWeb = "1.2.0-alpha01-dev679"
 
     const val junit = "4.13"
 }
@@ -24,7 +25,7 @@ object Compose {
     const val foundationLayout = "androidx.compose.foundation:foundation-layout:${Versions.compose}"
     const val material = "androidx.compose.material:material:${Versions.compose}"
     const val materialIconsExtended = "androidx.compose.material:material-icons-extended:${Versions.compose}"
-    const val navigation = "androidx.navigation:navigation-compose:${Versions.nav_compose}"
+    const val navigation = "androidx.navigation:navigation-compose:${Versions.navCompose}"
 }
 
 

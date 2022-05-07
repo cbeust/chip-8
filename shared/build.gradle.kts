@@ -5,28 +5,14 @@ plugins {
     id("com.android.library")
 }
 
-// workaround for https://youtrack.jetbrains.com/issue/KT-43944
-android {
-    configurations {
-        create("androidTestApi")
-        create("androidTestDebugApi")
-        create("androidTestReleaseApi")
-        create("testApi")
-        create("testDebugApi")
-        create("testReleaseApi")
-    }
-}
 
 kotlin {
     android()
 
-    ios {
-        binaries {
-            framework {
-                baseName = "shared"
-            }
-        }
-    }
+    val iosArm64 = iosArm64()
+    val iosX64 = iosX64()
+    val iosSimulatorArm64 = iosSimulatorArm64()
+
     jvm()
 
     js(IR) {
@@ -36,43 +22,44 @@ kotlin {
     sourceSets {
         val commonMain by getting {
             dependencies {
-                implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:${Versions.kotlinxCoroutines}") {
-                    isForce = true
-                }
-
-                //implementation(Deps.stately)
+                implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:${Versions.kotlinxCoroutines}")
             }
         }
         val commonTest by getting
         val androidMain by getting
         val androidTest by getting
-        val iosMain by getting
-        val iosTest by getting
         val jvmMain by getting
         val jsMain by getting
+
+        val appleMain by creating {
+            dependsOn(commonMain)
+        }
+        val appleTest by creating {
+            dependsOn(commonTest)
+        }
+
+        listOf(
+            iosArm64, iosX64, iosSimulatorArm64
+        ).forEach {
+            it.binaries.framework {
+                baseName = "shared"
+            }
+            getByName("${it.targetName}Main") {
+                dependsOn(appleMain)
+            }
+            getByName("${it.targetName}Test") {
+                dependsOn(appleTest)
+            }
+        }
     }
 }
 
 android {
-    compileSdkVersion(29)
+    compileSdk = 30
     sourceSets["main"].manifest.srcFile("src/androidMain/AndroidManifest.xml")
     defaultConfig {
-        minSdkVersion(21)
-        targetSdkVersion(29)
+        minSdk = 21
+        targetSdk = 30
     }
 }
 
-val packForXcode by tasks.creating(Sync::class) {
-    group = "build"
-    val mode = System.getenv("CONFIGURATION") ?: "DEBUG"
-    val sdkName = System.getenv("SDK_NAME") ?: "iphonesimulator"
-    val targetName = "ios" + if (sdkName.startsWith("iphoneos")) "Arm64" else "X64"
-    val framework = kotlin.targets.getByName<KotlinNativeTarget>(targetName).binaries.getFramework(mode)
-    inputs.property("mode", mode)
-    dependsOn(framework.linkTask)
-    val targetDir = File(buildDir, "xcode-frameworks")
-    from({ framework.outputDirectory })
-    into(targetDir)
-}
-
-tasks.getByName("build").dependsOn(packForXcode)

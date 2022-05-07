@@ -1,4 +1,3 @@
-import androidx.compose.desktop.Window
 import androidx.compose.foundation.*
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
@@ -19,9 +18,8 @@ import androidx.compose.ui.graphics.RectangleShape
 import androidx.compose.ui.input.key.*
 import androidx.compose.ui.input.key.onKeyEvent
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.unit.IntSize
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.window.application
+import androidx.compose.ui.window.*
 import com.beust.chip8.Display
 import dev.johnoreilly.chip8.Emulator
 import theme.SlackColors
@@ -32,7 +30,13 @@ import java.nio.file.Paths
 
 @ExperimentalComposeUiApi
 fun main() = application {
-    Window(title = "Chip-8 Emulator", size = IntSize(1280, 720))  {
+    val windowState = rememberWindowState(width = 1280.dp, height = 1280.dp)
+
+    Window(
+        onCloseRequest = ::exitApplication,
+        state = windowState,
+        title = "Chip-8 Emulator"
+    ) {
         EmulatorApp()
     }
 }
